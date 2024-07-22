@@ -7,7 +7,7 @@ pub mod recovery_tracker {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut client = TrackerClient::connect("http://0.0.0.0:5051").await?;
+    let mut client = TrackerClient::connect("http://0.0.0.0:8080").await?;
 
     let request = tonic::Request::new(EmptyRequest {});
 
