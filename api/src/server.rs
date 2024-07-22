@@ -13,7 +13,7 @@ pub struct MyTracker {}
 impl Tracker for MyTracker {
     async fn healthz(
         &self,
-        request: Request<EmptyRequest>,
+        _request: Request<EmptyRequest>,
     ) -> Result<Response<HealthzResponse>, Status> {
         let reply = HealthzResponse {
             status: "ok".into(),
@@ -23,8 +23,19 @@ impl Tracker for MyTracker {
 }
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "0.0.0.0:5051".parse()?;
+    let port: String;
+
+    match std::env::var("PORT") {
+        Ok(val) => port = val,
+        Err(_) => port = "8080".into(),
+    }
+
+    println!("port is {:?}", port);
+
+    let addr = format!("0.0.0.0:{port}").parse()?;
     let tracker = MyTracker::default();
+
+    println!("starting server on port: {:?}", port);
 
     Server::builder()
         .add_service(TrackerServer::new(tracker))
