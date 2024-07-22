@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package recovery_tracker;
+
+// System Messages
+message EmptyRequest {}
+
+message HealthzResponse {
+    string status=1;
+}
+
+// Activity
+message Activity {
+    int32 id = 1;
+    string name=2;
+    int32 points=3;
+}
+
+message GetAvailableActivitiesResponse {
+    repeated Activity activities=1;
+}
+
+message GetActivityLogRequest {
+    int32 user_id= 1;
+}
+message ActivityInstance {
+    Activity activity = 1;
+    int64 date_epoch = 2;
+    int32 stacks = 3;
+}
+
+message UserActivityLog {
+    int32 user_id= 1;
+    repeated ActivityInstance activity_instances = 2;
+}
+
+// User
+message GetUserByIdRequest {
+    int32 id = 1;
+}
+
+message GetUserByEmailRequest {
+    string email=1;
+}
+
+message GetUserByUsernameRequest {
+    string username = 1;
+}
+
+message User {
+    int32 id = 1;
+    string email = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string username = 5;
+}
+
+
+service Tracker {
+    rpc Healthz(EmptyRequest) returns (HealthzResponse);
+    // rpc GetAvailableActivities(EmptyRequest) returns(GetAvailableActivitiesResponse);
+    // rpc GetUserById(GetUserByIdRequest) returns (User);
+    // rpc GetUserByEmail(GetUserByEmailRequest) returns (User);
+    // rpc GetUserByUsername(GetUserByUsernameRequest) returns(User);
+    // rpc GetActivityLog(GetActivityLogRequest) returns (UserActivityLog);
+}
